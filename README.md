@@ -1,1 +1,1 @@
-Place the script inside ServerScriptService.
+-- Copy and paste the script inside ServerScriptService.
