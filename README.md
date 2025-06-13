@@ -1,1 +1,1 @@
-# FF_FIX
+Place the script inside ServerScriptService.
