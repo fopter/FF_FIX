@@ -1,0 +1,44 @@
+local toolsToWatch = {
+	"Bukiya", "ConstructionSupplies", "Horse", "Jumonji Yari", "Katakama Yari",
+	"Ladder", "MedicalSupplies", "Munehiro", "Naginata", "Nobori", "Otsuchi",
+	"Rock", "Smoke", "Su Yari", "Tachi", "Tanegashima", "Tanken", "Tashibishi",
+	"Tate", "Tetsubo", "WarRocks", "Yumi"
+}
+
+local toolSet = {}
+for _, name in ipairs(toolsToWatch) do
+	toolSet[name] = true
+end
+
+local function removeForceField(player)
+	local character = player.Character
+	if character then
+		local ff = character:FindFirstChildOfClass("ForceField")
+		if ff then
+			ff:Destroy()
+		end
+	end
+end
+
+local function onToolEquipped(tool, player)
+	if toolSet[tool.Name] then
+		removeForceField(player)
+	end
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function(character)
+		local function monitorTool(tool)
+			if tool:IsA("Tool") then
+				tool.Equipped:Connect(function()
+					onToolEquipped(tool, player)
+				end)
+			end
+		end
+
+		character.ChildAdded:Connect(monitorTool)
+		for _, item in ipairs(character:GetChildren()) do
+			monitorTool(item)
+		end
+	end)
+end)
